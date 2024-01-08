@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const Connection = async (username, password) => {
   const URL = `mongodb+srv://${username}:${password}@mern-auth.lxqnkhe.mongodb.net/?retryWrites=true&w=majority`;
@@ -12,4 +12,4 @@ const Connection = async (username, password) => {
   }
 };
 
-export default Connection;
+module.exports = Connection;

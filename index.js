@@ -1,15 +1,12 @@
-import express from "express";
-import Connection from "./database/db.js";
-
+const express = require("express");
 const app = express();
 const port = 4000;
-
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+const userRoutes = require("./routes/userRouter");
+const Connection = require("./database/db");
 
 Connection("rutvik", "rutvik1803");
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`Server running on port ${port}`);
 });
+app.use("/", [userRoutes]);
