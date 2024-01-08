@@ -2,11 +2,24 @@ const express = require("express");
 const app = express();
 const port = 4000;
 const userRoutes = require("./routes/userRouter");
+const authRoutes = require("./routes/authRouter");
 const Connection = require("./database/db");
 
 Connection("rutvik", "rutvik1803");
+app.use(express.json());
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
-app.use("/", [userRoutes]);
+app.use("/api/user", userRoutes);
+app.use("/api/auth", authRoutes);
+
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Internal Server Error";
+  res.status(statusCode).json({
+    success: "False",
+    message,
+    statusCode,
+  });
+});
