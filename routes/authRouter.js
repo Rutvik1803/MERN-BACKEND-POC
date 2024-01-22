@@ -1,6 +1,10 @@
 const router = require("./router");
-const authController = require("../controller/authController");
+const {
+  signupController,
+  signInController,
+} = require("../controller/authController");
 
-router.post("/signup", authController);
+router.post("/auth/signup", signupController);
+router.post("/auth/signin", signInController);
 
 module.exports = router;

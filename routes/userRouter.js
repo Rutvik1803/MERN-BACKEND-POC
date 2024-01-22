@@ -1,6 +1,6 @@
 const router = require("./router");
 const getUserController = require("../controller/getUserController");
 
-router.get("/users", getUserController);
+router.get("/user/users", getUserController);
 
 module.exports = router;
