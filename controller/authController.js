@@ -44,7 +44,51 @@ const signInController = async (req, res) => {
   }
 };
 
+const googleController = async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (user) {
+      const token = jwt.sign({ id: user._id }, "mernauth");
+      const { password: hashedPassword, ...rest } = user._doc;
+      const expiryDate = new Date(Date.now() + 3600000);
+      res
+        .cookie("access_token", token, {
+          httpOnly: true,
+          expires: expiryDate,
+        })
+        .status(200)
+        .json(rest);
+    } else {
+      const generatePassword =
+        Math.random().toString(36).slice(-8) +
+        Math.random().toString(36).slice(-8);
+      const hashedPassword = bcryptjs.hashSync(generatePassword, 10);
+      const newUser = new User({
+        firstname: req.body.fname,
+        lastname: req.body.lname,
+        email: req.body.email,
+        password: hashedPassword,
+        profilePhoto: req.body.photo,
+      });
+      await newUser.save();
+      const token = jwt.sign({ id: newUser._id }, "mernauth");
+      const { password: hashedPassword2, ...rest } = newUser._doc;
+      const expiryDate = new Date(Date.now() + 3600000);
+      res
+        .cookie("access_token", token, {
+          httpOnly: true,
+          expires: expiryDate,
+        })
+        .status(200)
+        .json(rest);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   signupController,
   signInController,
+  googleController,
 };
