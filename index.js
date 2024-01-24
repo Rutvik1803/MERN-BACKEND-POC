@@ -5,9 +5,11 @@ const userRoutes = require("./routes/userRouter");
 const authRoutes = require("./routes/authRouter");
 const Connection = require("./database/db");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 Connection("rutvik", "rutvik1803");
 app.use(express.json());
+app.use(cookieParser());
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 
 app.listen(port, () => {

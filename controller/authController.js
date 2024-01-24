@@ -17,7 +17,7 @@ const signupController = async (req, res, next) => {
       message: "Data added to Database Successfully!",
     });
   } catch (error) {
-    next(error); //Middleware calling
+    console.log(error); //Middleware calling
   }
 };
 
@@ -29,7 +29,7 @@ const signInController = async (req, res) => {
     const validPassword = bcryptjs.compareSync(password, validUser.password);
     if (!validPassword) res.status(401).json("Invalid Credentials");
 
-    const token = jwt.sign({ id: validUser._id }, "mernproject");
+    const token = jwt.sign({ id: validUser._id }, "mernauth");
     const expiryDate = new Date(Date.now() + 3600000); //1 hour
     const { password: hashedPassword, ...rest } = validUser._doc; // for password hiding if sending the whole data in response
     res
